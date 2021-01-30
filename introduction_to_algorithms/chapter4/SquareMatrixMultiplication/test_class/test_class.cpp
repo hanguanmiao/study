@@ -39,7 +39,7 @@ std::vector<int> generate::GenerateNums(std::size_t size, int rangelow,
     for(std::size_t i=0; i<size; ++i){
         l_ret[i] = l_dist(l_gen);
     }
-    return std::move(l_ret);
+    return l_ret;
 }
 
 

@@ -1,4 +1,4 @@
-PROM=main
+PROM=smm.out
 
 ABSDIR=$(shell pwd)
 SRCS=$(shell find ${ABSDIR} -type f -name "*.cpp")

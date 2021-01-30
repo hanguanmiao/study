@@ -9,7 +9,7 @@ int main(void){
     class solution ls;
     class generate lg;
 
-    for(std::size_t i=0; i < 10; ++i){
+    for(std::size_t i=0; i < 4; ++i){
         std::vector<std::vector<int>> lleft = lg.GenerateMatrix(i, -i, i);
         std::vector<std::vector<int>> lright = lg.GenerateMatrix(i,-i,i);
 
