@@ -31,5 +31,6 @@
 *.out
 *.app
 
-#qt
+#add by user
 study_qt.*
+core
