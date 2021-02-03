@@ -1,7 +1,6 @@
 ;this is comment
 section .text
-globl CalcSum_
-.type CalcSum_,@function
+global CalcSum_
 CalcSum_:
     push ebp
     mov ebp,esp
@@ -12,4 +11,3 @@ CalcSum_:
     add eax,edx
     pop ebp
     ret
-
