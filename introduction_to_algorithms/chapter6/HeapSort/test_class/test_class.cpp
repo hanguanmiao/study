@@ -40,7 +40,7 @@ void solution::maxheapify(std::vector<int> &v, std::size_t ci, std::size_t mi){
 }
 
 void solution::buildmaxheap(std::vector<int> &v){
-    std::size_t maxi = v.size() - 1, maxloopi = (maxi-1)/2;
+    std::size_t maxi = v.size() - 1, maxloopi = (v.size()-2)/2;
 
     for(;;--maxloopi){
         maxheapify(v,maxloopi,maxi);
