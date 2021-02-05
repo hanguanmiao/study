@@ -25,11 +25,11 @@ void solution::randomizedQuickSort(std::vector<int> &vec, std::size_t minidx,
 
 std::size_t solution::randomizedPartition(std::vector<int> &vec,
         std::size_t minidx, std::size_t maxidx){
-//    std::random_device rd;
-//    std::default_random_engine re(rd());
-//    std::uniform_int_distribution<int> dist(minidx,maxidx);
-//    std::size_t idx = dist(re);
-//    std::swap(vec[idx],vec[maxidx]);
+    std::random_device rd;
+    std::default_random_engine re(rd());
+    std::uniform_int_distribution<int> dist(minidx,maxidx);
+    std::size_t idx = dist(re);
+    std::swap(vec[idx],vec[maxidx]);
     return partition(vec, minidx, maxidx);
 }
 
