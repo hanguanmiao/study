@@ -6,64 +6,89 @@
 
 #include "test_class.h"
 
-std::vector<int> solution::CountingSort(std::vector<int> &vec, int minval, int maxval){
-    if(maxval < minval){
-        std::cout << "minval: " << minval << "maxval: " << maxval << std::endl;
-        return vec;
+int solution::RandomizedSelect(std::vector<int> &vec, std::size_t num){
+    if(vec.empty()){
+        std::cerr << "empty" << std::endl;
+        return 0;
     }
-    if(vec.empty() || vec.size() == 1 || minval == maxval){
-        return vec;
-    }
-
-    std::vector<int> count(maxval - minval + 1, 0);
-    for(auto &v : vec){
-        ++count[v-minval];
-    }
-    for(std::size_t i=1,j=0; i<count.size(); ++i,++j){
-        count[i] += count[j];
+    if(vec.size() == 1){
+        return vec[0];
     }
 
-    std::vector<int> ret(vec.size());
-    for(auto &v : vec){
-        ret[count[v-minval] - 1] = v;
-        --count[v-minval];
-    }
-    return ret;
+    return randomizedSelect(vec, num, 0, vec.size()-1);
 }
+
+int solution::randomizedSelect(std::vector<int> &vec, std::size_t num,
+                               std::size_t minidx, std::size_t maxidx){
+    assert(minidx <= maxidx);
+    assert(num);
+    if(minidx == maxidx) {
+        return vec[minidx];
+    }
+
+    std::size_t pid = randomizedPartition(vec, minidx, maxidx);
+    std::size_t needidx = num - 1 + minidx;
+    if(pid == needidx) return vec[needidx];
+    if(pid < needidx) return randomizedSelect(vec, num - (pid - minidx + 1),
+                                              pid+1, maxidx);
+    return randomizedSelect(vec, num, minidx, pid - 1);
+}
+
+std::size_t solution::randomizedPartition(std::vector<int> &vec, std::size_t minidx,
+                                std::size_t maxidx){
+//    std::random_device rd;
+//    std::default_random_engine re(rd());
+//    std::uniform_int_distribution<std::size_t> dist(minidx, maxidx);
+
+//    std::size_t rnum = dist(re);
+//    std::swap(vec[maxidx], vec[rnum]);
+    return partition(vec, minidx, maxidx);
+}
+
+std::size_t solution::partition(std::vector<int> &vec, std::size_t minidx,
+                      std::size_t maxidx){
+    assert(minidx < maxidx);
+    std::size_t i = minidx - 1, j = minidx;
+    for(;j<maxidx; ++j){
+        if(vec[j] < vec[maxidx]){
+            std::swap(vec[++i], vec[j]);
+        }
+    }
+    std::swap(vec[++i], vec[maxidx]);
+    return i;
+}
+
 
 /* ---------- private fucntion --------- */
 
 
 /* ------------------ */
-void Test::TestCS(void){
+void Test::TestFunc(void){
     std::random_device rd;
     std::default_random_engine re(rd());
     std::vector<int> vec;
     solution s;
-    int rnum, minval, maxval;
+    int rnum;
 
-    for(std::size_t i=0; i < 100;++i){
+    for(std::size_t i=0; i < 30;++i){
         std::uniform_int_distribution<int> dist(-i,i);
 
         vec.clear();
-        minval = INT32_MAX;
-        maxval = INT32_MIN;
         for(std::size_t j=0; j<i; ++j){
             rnum = dist(re);
             vec.push_back(rnum);
-            if(rnum < minval) minval = rnum;
-            if(maxval < rnum) maxval = rnum;
         }
         std::cout << "before: ";
         for(auto &v:vec){
             std::cout << v << ' ';
         }
         std::cout << std::endl;
-        auto res = s.CountingSort(vec, minval, maxval);
-        std::cout << "after: ";
-        for(auto &v:res){
-            std::cout << v << ' ';
-        }
+        std::uniform_int_distribution<std::size_t> distsec(1,vec.size());
+        std::size_t secnum = distsec(re);
+        std::cout << "select: " << secnum << std::endl;
+
+        auto res = s.RandomizedSelect(vec, secnum);
+        std::cout << "after: " << res;
         std::cout << std::endl << std::endl;
     }
 }

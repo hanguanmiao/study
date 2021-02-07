@@ -4,7 +4,7 @@
 
 int main(void){
     Test t;
-    t.TestCS();
+    t.TestFunc();
 
     return 0;
 }

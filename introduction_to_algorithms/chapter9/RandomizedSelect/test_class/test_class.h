@@ -5,14 +5,19 @@
 
 class solution{
 public:
-    std::vector<int> CountingSort(std::vector<int> &vec, int minval, int maxval);
+    int RandomizedSelect(std::vector<int> &vec, std::size_t num);
 private:
-
+    int randomizedSelect(std::vector<int> &vec, std::size_t num,
+                                   std::size_t minidx, std::size_t maxidx);
+    std::size_t randomizedPartition(std::vector<int> &vec, std::size_t minidx,
+                                    std::size_t maxidx);
+    std::size_t partition(std::vector<int> &vec, std::size_t minidx,
+                          std::size_t maxidx);
 };
 
 class Test{
 public:
-    void TestCS(void);
+    void TestFunc(void);
 };
 
 #endif // TEST_CLASS_H
