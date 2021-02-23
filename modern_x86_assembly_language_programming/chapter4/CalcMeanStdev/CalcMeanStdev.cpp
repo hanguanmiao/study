@@ -32,11 +32,12 @@ int main(void){
     double mean2, stdev2;
 
     CalcMeanStdevCpp(a, n, &mean1, &stdev1);
-//    CalcMeanStdev_(a, n, &mean2, &stdev2);
+    CalcMeanStdev_(a, n, &mean2, &stdev2);
 
     for(int i=0; i<n; ++i){
         printf("a[%d] = %g\n", i, a[i]);
     }
     printf("\n");
     printf("mean1: %g stdev1: %g\n", mean1, stdev1);
+    printf("mean1: %g stdev1: %g\n", mean2, stdev2);
 }
