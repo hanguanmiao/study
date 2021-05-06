@@ -1,15 +1,13 @@
 .section .text
 .globl IntegerAdd_
 .globl IntegerMul_
+.globl IntegerDiv_
 
 .type IntegerAdd_,@function
 IntegerAdd_:
     addq %rdi,%rsi
     addq %rdx,%rcx
     addq %r9,%r8
-
-    #movq 40(%rsp),%rax
-    #addq 48(%rsp),%rax
 
     addq %r8,%rcx
     addq %rcx,%rsi
@@ -37,5 +35,23 @@ IntegerMul_:
     imulq %r11,%rax
     imulq %r10,%rax
     imulq %rcx,%rax
+
+    ret
+
+
+.type IntegerDiv_,@function
+IntegerDiv_:
+    mov %rdx, %r10
+    mov %rdi, %rax
+    cqo
+    idiv %rsi
+    mov %rax, (%r10)
+    mov %rdx, 8(%r10)
+
+    mov %rcx, %rax
+    cqo
+    idiv %r8
+    mov %rax, (%r9)
+    mov %rdx, 8(%r9)
 
     ret
