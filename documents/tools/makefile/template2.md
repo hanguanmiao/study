@@ -55,6 +55,6 @@ VERINFO:
     fi
 
 clean:
-	rm -f $(OBJS) $(BIN) $(DEPENDENCY)
+	rm -f $(OBJS) $(BIN) $(DEPENDENCY) $(PROTOOBJS)
 
 -include $(DEPENDENCY)
