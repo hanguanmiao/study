@@ -10,16 +10,11 @@ BIN=alioss_bin
 
 # 除去隐藏目录
 ALLDIR=$(shell find ../.. -type d | grep -E '\.git|ldpipe_proto|test|cmake|doc|samples|tools|third_party|raw-examples|10m|examples|protobuf' -v)
-#$(warning $(ALLDIR))
-SRCS1=$(foreach DIR,$(ALLDIR), $(wildcard $(DIR)/*.cpp)) 
-SRCS2=$(foreach DIR,$(ALLDIR), $(wildcard $(DIR)/*.cc))
-#$(warning $(SRCS1) $(SRCS2))
+SRCS=$(foreach DIR,$(ALLDIR), $(wildcard $(DIR)/*.cc))
 
-DEPENDENCY=$(foreach DIR,$(ALLDIR), $(wildcard $(DIR)/*.h))
-#$(warning $(DEPENDENCY))
+OBJS=$(patsubst %.cc,%.o,$(SRCS))
 
-OBJS=$(patsubst %.cpp,%.o,$(SRCS1)) $(patsubst %.cc,%.o,$(SRCS2))
-#$(warning $(OBJS))
+DEPENDENCY=$(patsubst %.o,%.o.d,$(OBJS))
 
 PROTODIR=$(TOPDIR)/ldpipe_proto
 PROTOFILE=$(wildcard $(PROTODIR)/*.proto)
@@ -32,8 +27,8 @@ ALL: $(BIN) VERINFO
 $(BIN): $(OBJS) $(PROTOOBJS) 
 	$(CXX) -o $(BIN) $^ $(CXXFLAGS) $(CXXFLAG)
 
-%.o: %.cc %.cpp %.h
-	$(CXX) -o $@ -c $< $(CXXFLAGS)
+%.o: %.cc
+	$(CXX) -o $@ -c $< $(CXXFLAGS) -MMD -MF $@.d 
 
 $(PROTOSRC): $(PROTOFILE)
 	cd $(PROTODIR);protoc --cpp_out=. $(notdir $(PROTOFILE))
@@ -60,4 +55,6 @@ VERINFO:
     fi
 
 clean:
-	rm -f $(OBJS) $(BIN)
+	rm -f $(OBJS) $(BIN) $(DEPENDENCY)
+
+-include $(DEPENDENCY)
