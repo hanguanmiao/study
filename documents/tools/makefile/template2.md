@@ -1,7 +1,13 @@
 TOPDIR=../..
 
+VER=release
 CXX=g++
-CXXFLAGS=-DOS_LINUX -std=c++11 -Wall -Wextra -pthread  -lprotobuf -lalibabacloud-oss-cpp-sdk -lcurl -lssl -lcrypto
+ifeq ($(VER),release)
+	CXXFLAGS=-DOS_LINUX -std=c++11 -Wall -Wextra -pthread  -lprotobuf -lalibabacloud-oss-cpp-sdk -lcurl -lssl -lcrypto -DNDEBUG
+else
+	CXXFLAGS=-DOS_LINUX -std=c++11 -Wall -Wextra -pthread  -lprotobuf -lalibabacloud-oss-cpp-sdk -lcurl -lssl -lcrypto 
+endif
+
 CXXFLAG=
 
 BIN=alioss_bin
