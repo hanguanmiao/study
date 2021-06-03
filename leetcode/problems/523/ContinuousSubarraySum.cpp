@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <unordered_map>
 
 using namespace std;
 
@@ -8,7 +9,18 @@ public:
     bool checkSubarraySum(vector<int>& nums, int k) {
         int size = nums.size();
         if(size < 2) return false;
-
+        unordered_map<int,int> remaindermap;
+        remaindermap[0] = -1;
+        int remainder = 0;
+        for(int i=0; i<size; ++i){
+            remainder = (remainder + nums[i])%k;
+            if(remaindermap.count(remainder)){
+                if(i - remaindermap[remainder] >= 2) return true;
+            }else{
+                remaindermap[remainder] = i;
+            }
+        }
+        return false;
     }
 };
 
