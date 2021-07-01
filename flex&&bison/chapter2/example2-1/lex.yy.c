@@ -322,6 +322,9 @@ void yyfree ( void *  );
 #define YY_AT_BOL() (YY_CURRENT_BUFFER_LVALUE->yy_at_bol)
 
 /* Begin user sect3 */
+
+#define yywrap() (/*CONSTCOND*/1)
+#define YY_SKIP_YYWRAP
 typedef flex_uint8_t YY_CHAR;
 
 FILE *yyin = NULL, *yyout = NULL;
@@ -438,12 +441,12 @@ int yy_flex_debug = 0;
 char *yytext;
 #line 1 "fb2-1.l"
 /* 更像unix的wc程序 */
-#line 3 "fb2-1.l"
+#line 4 "fb2-1.l"
 int chars = 0;
 int words = 0;
 int lines = 0;
-#line 446 "lex.yy.c"
-#line 447 "lex.yy.c"
+#line 449 "lex.yy.c"
+#line 450 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -660,10 +663,10 @@ YY_DECL
 		}
 
 	{
-#line 8 "fb2-1.l"
+#line 9 "fb2-1.l"
 
 
-#line 667 "lex.yy.c"
+#line 670 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -722,26 +725,26 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 10 "fb2-1.l"
+#line 11 "fb2-1.l"
 {++words; chars += strlen(yytext);}
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 11 "fb2-1.l"
+#line 12 "fb2-1.l"
 {++chars; ++lines;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 12 "fb2-1.l"
+#line 13 "fb2-1.l"
 {++chars;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 14 "fb2-1.l"
+#line 15 "fb2-1.l"
 ECHO;
 	YY_BREAK
-#line 745 "lex.yy.c"
+#line 748 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1746,7 +1749,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 14 "fb2-1.l"
+#line 15 "fb2-1.l"
 
 
 int main(int argc, char *argv[]){

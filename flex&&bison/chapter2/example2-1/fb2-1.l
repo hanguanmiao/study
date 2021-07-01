@@ -1,4 +1,5 @@
 /* 更像unix的wc程序 */
+%option noyywrap
 %{
 int chars = 0;
 int words = 0;
