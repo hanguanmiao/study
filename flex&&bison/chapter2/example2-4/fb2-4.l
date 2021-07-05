@@ -25,6 +25,8 @@ char *curfilename;
 %}
 
 %%
+    /* 重要语汇 */
+
 a |
 an |
 and |
