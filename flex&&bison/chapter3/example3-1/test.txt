@@ -1,0 +1,2 @@
+1(+1+4)/3 // error: syntax error
+|-3|	// error: syntax error
