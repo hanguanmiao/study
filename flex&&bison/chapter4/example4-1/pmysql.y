@@ -178,7 +178,7 @@ expr: FSUBSTRING '(' val_list ')' {emit("CALL %d SUBSTR", $3);}
     | FTRIM '(' trim_ltb expr FROM val_list ')' {emit("CALL 3 TRIM");}
     ;
 
-trim_lsb: LEADING {emit("NUMBER 1");}
+trim_ltb: LEADING {emit("NUMBER 1");}
     | TRAILING {emit("NUMBER 2");}
     | BOTH {emit("NUMBER 3");}
     ;
@@ -217,6 +217,24 @@ expr: expr LIKE expr {emit("LIKE");}
 expr: expr REGEXP expr {emit("REGEXP");}
     | expr NOT REGEXP expr {emit("REGEXP");emit("NOT")}
     ;
+
+expr: CURRENT_TIMESTAMP {emit("NOW");}
+    | CURRENT_DATE {emit("NOW");}
+    | CURRENT_TIME {emit("NOW");}
+    ;
+
+expr: BINARY expr %prec UMINUS {emit("STRTOBIN");}
+    ;
+
+ /* 语句: select语句 */
+stmt: select_stmt {emit("STMT");}
+    ;
+
+select_stmt: SELECT select_opts select_expr_list /* 简单的无数据表select */
+                        {emit("SELECTNODATE %d %d", $2, $3);}
+    ;
+
+
 
 %%
 int main(int argc, char *argv[]){
