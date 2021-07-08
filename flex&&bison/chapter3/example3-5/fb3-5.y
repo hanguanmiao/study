@@ -18,7 +18,7 @@ extern int yylex();
 
 /* 声明记号 */
 %token<d> NUMBER
-%token<s> NAME;
+%token<s> NAME
 %token<fn> FUNC
 %token EOL
 

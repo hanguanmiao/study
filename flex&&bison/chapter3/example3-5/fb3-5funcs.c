@@ -6,6 +6,7 @@
 #include "fb3-5.h"
 
 extern int yyparse();
+extern int yydebug;
 
 static unsigned symhash(char *sym);
 static double callbuiltin(struct fncall *f);
@@ -14,6 +15,7 @@ static double calluser(struct ufncall *f);
 
 int main(void){
     printf("> ");
+    yydebug = 1;
     return yyparse();
 }
 
