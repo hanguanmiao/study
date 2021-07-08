@@ -34,3 +34,5 @@
 #add by user
 study_qt.*
 core
+core.*
+*.output
