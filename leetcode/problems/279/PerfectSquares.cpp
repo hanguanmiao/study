@@ -8,25 +8,7 @@ using namespace std;
 class Solution {
 public:
     int numSquares(int n) {
-        vector<int> counts(n+1);
-        vector<int> squarearr;
 
-        for(int i=1; i<=n; ++i){
-            int sqrtres = sqrt(i);
-            if(i == sqrtres * sqrtres){
-                counts[i] = 1;
-                squarearr.push_back(i);
-            }else{
-                int mincount = INT_MAX;
-                for(auto &square : squarearr){
-                    int temp = counts[i-square] + 1;
-                    mincount = mincount <= temp ? mincount : temp;
-                }
-                counts[i] = mincount;
-            }
-        }
-
-        return counts[n];
     }
 };
 
