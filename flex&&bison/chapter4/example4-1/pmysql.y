@@ -417,6 +417,7 @@ delete_stmt: DELETE delete_opts FROM NAME opt_where opt_orderby opt_limit {
 delete_opts: delete_opts LOW_PRIORITY {$$ = $1 + 01;}
     | delete_opts QUICK {$$ = $1 + 02;}
     | delete_opts IGNORE {$$ = $1 + 04;}
+    | /* nil */ {$$ = 0;}
     ;
 
  /* 多表删除，第一版 */
