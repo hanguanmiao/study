@@ -44,6 +44,13 @@
 %%
 
 calc: /* nil */ EOL {pp->ast = NULL; YYACCEPT;}
+    | stmt EOL {pp->ast = $1; YYACCEPT;}
+    | LET NAME '(' symlist ')' '=' list EOL {
+            dodef(pp, $2, $4, $7);
+            printf("%d: Defined %s\n", yyget_lineno(pp->scaninfo), $2->name);
+            pp->ast = NULL;
+            YYACCEPT;
+        }
 
 
 stmt: IF exp THEN list { $$ = newflow('I', $2, $4, NULL);}
