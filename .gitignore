@@ -38,3 +38,4 @@ core.*
 *.output
 *.bin
 *.img
+*.com
