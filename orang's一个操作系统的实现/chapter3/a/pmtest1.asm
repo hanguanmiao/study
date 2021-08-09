@@ -1,79 +1,93 @@
-;=================================
-;pmtest1.asm
-; ÁºñËØëÊñπÊ≥ï: nasm pmtest1.asm -o pmtest1.bin
-;============================
+; ==========================================
+; pmtest1.asm
+; ±‡“Î∑Ω∑®£∫nasm pmtest1.asm -o pmtest1.bin
+; ==========================================
 
-%include "pm.inc"
+%include	"pm.inc"	; ≥£¡ø, ∫Í, “‘º∞“ª–©Àµ√˜
 
-org 0100h
-    jmp LABEL_BEGIN
+org	07c00h
+	jmp	LABEL_BEGIN
 
 [SECTION .gdt]
-LABEL_GDT:          Descriptor          0,                  0,              0
-LABEL_DESC_CODE32:   Descriptor          0,   SegCode32Len - 1,   DA_C + DA_32
-LABEL_DESC_VIDEO:   Descriptor    0B8000h,             0ffffh,         DA_DRW
+; GDT
+;                              ∂Œª˘÷∑,       ∂ŒΩÁœﬁ     ,  Ù–‘
+LABEL_GDT:	   Descriptor       0,                0, 0           ; ø’√Ë ˆ∑˚
+LABEL_DESC_CODE32: Descriptor       0, SegCode32Len - 1, DA_C + DA_32; ∑«“ª÷¬¥˙¬Î∂Œ
+LABEL_DESC_VIDEO:  Descriptor 0B8000h,           0ffffh, DA_DRW	     ; œ‘¥Ê ◊µÿ÷∑
+; GDT Ω· ¯
 
-GdtLen  equ $ - LABEL_GDT   ; GDTÈïøÂ∫¶
-GdtPtr  dw  GdtLen - 1      ; GDTÁïåÈôê
-        dd  0               ; GDTÂü∫Âú∞ÂùÄ
+GdtLen		equ	$ - LABEL_GDT	; GDT≥§∂»
+GdtPtr		dw	GdtLen - 1	; GDTΩÁœﬁ
+		dd	0		; GDTª˘µÿ÷∑
 
-
-SelectorCode32  equ     LABEL_DESC_CODE32 - LABEL_GDT
-selectorVideo   equ     LABEL_DESC_VIDEO - LABEL_GDT
+; GDT —°‘Ò◊”
+SelectorCode32		equ	LABEL_DESC_CODE32	- LABEL_GDT
+SelectorVideo		equ	LABEL_DESC_VIDEO	- LABEL_GDT
+; END of [SECTION .gdt]
 
 [SECTION .s16]
-[BITS 16]
-
+[BITS	16]
 LABEL_BEGIN:
-    mov ax, cs
-    mov ds, ax
-    mov es, ax
-    mov ss, ax
-    mov sp, 0100h
+	mov	ax, cs
+	mov	ds, ax
+	mov	es, ax
+	mov	ss, ax
+	mov	sp, 0100h
 
-    ; ÂàùÂßãÂåñ32‰Ωç‰ª£Á†ÅÊÆµÊèèËø∞Á¨¶
-    xor eax, eax
-    mov ax, cs
-    shl eax, 4
-    add eax, LABEL_DESC_CODE32
-    mov word [LABEL_DESC_CODE32 + 2], ax
-    shr eax, 16
-    mov byte [LABEL_DESC_CODE32 + 4], al
-    mov byte [LABEL_DESC_CODE32 + 7], ah
+	; ≥ı ºªØ 32 Œª¥˙¬Î∂Œ√Ë ˆ∑˚
+	xor	eax, eax
+	mov	ax, cs
+	shl	eax, 4
+	add	eax, LABEL_SEG_CODE32
+	mov	word [LABEL_DESC_CODE32 + 2], ax
+	shr	eax, 16
+	mov	byte [LABEL_DESC_CODE32 + 4], al
+	mov	byte [LABEL_DESC_CODE32 + 7], ah
 
-    ;‰∏∫Âä†ËΩΩGDTR‰ΩúÂáÜÂ§á
-    xor eax,eax
-    mov ax, ds
-    shl eax, 4
-    add eax, LABEL_GDT  ;eax<- gdt Âü∫Âú∞ÂùÄ
-    mov dword [GdtPtr + 2], eax
+	; Œ™º”‘ÿ GDTR ◊˜◊º±∏
+	xor	eax, eax
+	mov	ax, ds
+	shl	eax, 4
+	add	eax, LABEL_GDT		; eax <- gdt ª˘µÿ÷∑
+	mov	dword [GdtPtr + 2], eax	; [GdtPtr + 2] <- gdt ª˘µÿ÷∑
 
-    lgdt [GdtPtr]
+	; º”‘ÿ GDTR
+	lgdt	[GdtPtr]
 
-    cli
+	; πÿ÷–∂œ
+	cli
 
-    in al, 92h
-    or al, 00000010b
-    out 92h, al
+	; ¥Úø™µÿ÷∑œﬂA20
+	in	al, 92h
+	or	al, 00000010b
+	out	92h, al
 
-    mov eax, cr0
-    or eax, 1
-    mov cr0, eax
+	; ◊º±∏«–ªªµΩ±£ª§ƒ£ Ω
+	mov	eax, cr0
+	or	eax, 1
+	mov	cr0, eax
 
-    jmp dword SelectorCode32:0
+	; ’Ê’˝Ω¯»Î±£ª§ƒ£ Ω
+	jmp	dword SelectorCode32:0	; ÷¥––’‚“ªæ‰ª·∞— SelectorCode32 ◊∞»Î cs,
+					; ≤¢Ã¯◊™µΩ Code32Selector:0  ¥¶
+; END of [SECTION .s16]
 
-[SECTION .s32]
-[BITS 32]
+
+[SECTION .s32]; 32 Œª¥˙¬Î∂Œ. ”… µƒ£ ΩÃ¯»Î.
+[BITS	32]
 
 LABEL_SEG_CODE32:
-    mov ax, selectorVideo
-    mov gs, ax
+	mov	ax, SelectorVideo
+	mov	gs, ax			;  ”∆µ∂Œ—°‘Ò◊”(ƒøµƒ)
 
-    mov edi,(80*11+79)*2
-    mov ah, 0Ch
-    mov al, 'p'
-    mov [gs:edi], ax
+	mov	edi, (80 * 11 + 79) * 2	; ∆¡ƒªµ⁄ 11 ––, µ⁄ 79 ¡–°£
+	mov	ah, 0Ch			; 0000: ∫⁄µ◊    1100: ∫Ï◊÷
+	mov	al, 'P'
+	mov	[gs:edi], ax
 
-    jmp $
+	; µΩ¥ÀÕ£÷π
+	jmp	$
 
-SegCode32Len    equ $-LABEL_SEG_CODE32
+SegCode32Len	equ	$ - LABEL_SEG_CODE32
+; END of [SECTION .s32]
+
