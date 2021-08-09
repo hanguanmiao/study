@@ -36,3 +36,5 @@ study_qt.*
 core
 core.*
 *.output
+*.bin
+*.img
