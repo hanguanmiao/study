@@ -1,26 +1,26 @@
 ; ==========================================
 ; pmtest1.asm
-; ±àÒë·½·¨£ºnasm pmtest1.asm -o pmtest1.bin
+; ï¿½ï¿½ï¿½ë·½ï¿½ï¿½ï¿½ï¿½nasm pmtest1.asm -o pmtest1.bin
 ; ==========================================
 
-%include	"pm.inc"	; ³£Á¿, ºê, ÒÔ¼°Ò»Ð©ËµÃ÷
+%include	"pm.inc"	; ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½, ï¿½Ô¼ï¿½Ò»Ð©Ëµï¿½ï¿½
 
 org	07c00h
-	jmp	LABEL_BEGIN
+        jmp	LABEL_BEGIN
 
 [SECTION .gdt]
 ; GDT
-;                              ¶Î»ùÖ·,       ¶Î½çÏÞ     , ÊôÐÔ
-LABEL_GDT:	   Descriptor       0,                0, 0           ; ¿ÕÃèÊö·û
-LABEL_DESC_CODE32: Descriptor       0, SegCode32Len - 1, DA_C + DA_32; ·ÇÒ»ÖÂ´úÂë¶Î
-LABEL_DESC_VIDEO:  Descriptor 0B8000h,           0ffffh, DA_DRW	     ; ÏÔ´æÊ×µØÖ·
-; GDT ½áÊø
+;                              ï¿½Î»ï¿½Ö·,       ï¿½Î½ï¿½ï¿½ï¿½     , ï¿½ï¿½ï¿½ï¿½
+LABEL_GDT:	   Descriptor       0,                0, 0           ; ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+LABEL_DESC_CODE32: Descriptor       0, SegCode32Len - 1, DA_C + DA_32; ï¿½ï¿½Ò»ï¿½Â´ï¿½ï¿½ï¿½ï¿½ï¿½
+LABEL_DESC_VIDEO:  Descriptor 0B8000h,           0ffffh, DA_DRW	     ; ï¿½Ô´ï¿½ï¿½×µï¿½Ö·
+; GDT ï¿½ï¿½ï¿½ï¿½
 
-GdtLen		equ	$ - LABEL_GDT	; GDT³¤¶È
-GdtPtr		dw	GdtLen - 1	; GDT½çÏÞ
-		dd	0		; GDT»ùµØÖ·
+GdtLen		equ	$ - LABEL_GDT	; GDTï¿½ï¿½ï¿½ï¿½
+GdtPtr		dw	GdtLen - 1	; GDTï¿½ï¿½ï¿½ï¿½
+                dd	0		; GDTï¿½ï¿½ï¿½ï¿½Ö·
 
-; GDT Ñ¡Ôñ×Ó
+; GDT Ñ¡ï¿½ï¿½ï¿½ï¿½
 SelectorCode32		equ	LABEL_DESC_CODE32	- LABEL_GDT
 SelectorVideo		equ	LABEL_DESC_VIDEO	- LABEL_GDT
 ; END of [SECTION .gdt]
@@ -28,65 +28,65 @@ SelectorVideo		equ	LABEL_DESC_VIDEO	- LABEL_GDT
 [SECTION .s16]
 [BITS	16]
 LABEL_BEGIN:
-	mov	ax, cs
-	mov	ds, ax
-	mov	es, ax
-	mov	ss, ax
-	mov	sp, 0100h
+        mov	ax, cs
+        mov	ds, ax
+        mov	es, ax
+        mov	ss, ax
+        mov	sp, 0100h
 
-	; ³õÊ¼»¯ 32 Î»´úÂë¶ÎÃèÊö·û
-	xor	eax, eax
-	mov	ax, cs
-	shl	eax, 4
-	add	eax, LABEL_SEG_CODE32
-	mov	word [LABEL_DESC_CODE32 + 2], ax
-	shr	eax, 16
-	mov	byte [LABEL_DESC_CODE32 + 4], al
-	mov	byte [LABEL_DESC_CODE32 + 7], ah
+        ; ï¿½ï¿½Ê¼ï¿½ï¿½ 32 Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        xor	eax, eax
+        mov	ax, cs
+        shl	eax, 4
+        add	eax, LABEL_SEG_CODE32
+        mov	word [LABEL_DESC_CODE32 + 2], ax
+        shr	eax, 16
+        mov	byte [LABEL_DESC_CODE32 + 4], al
+        mov	byte [LABEL_DESC_CODE32 + 7], ah
 
-	; Îª¼ÓÔØ GDTR ×÷×¼±¸
-	xor	eax, eax
-	mov	ax, ds
-	shl	eax, 4
-	add	eax, LABEL_GDT		; eax <- gdt »ùµØÖ·
-	mov	dword [GdtPtr + 2], eax	; [GdtPtr + 2] <- gdt »ùµØÖ·
+        ; Îªï¿½ï¿½ï¿½ï¿½ GDTR ï¿½ï¿½×¼ï¿½ï¿½
+        xor	eax, eax
+        mov	ax, ds
+        shl	eax, 4
+        add	eax, LABEL_GDT		; eax <- gdt ï¿½ï¿½ï¿½ï¿½Ö·
+        mov	dword [GdtPtr + 2], eax	; [GdtPtr + 2] <- gdt ï¿½ï¿½ï¿½ï¿½Ö·
 
-	; ¼ÓÔØ GDTR
-	lgdt	[GdtPtr]
+        ; ï¿½ï¿½ï¿½ï¿½ GDTR
+        lgdt	[GdtPtr]
 
-	; ¹ØÖÐ¶Ï
-	cli
+        ; ï¿½ï¿½ï¿½Ð¶ï¿½
+        cli
 
-	; ´ò¿ªµØÖ·ÏßA20
-	in	al, 92h
-	or	al, 00000010b
-	out	92h, al
+        ; ï¿½ò¿ªµï¿½Ö·ï¿½ï¿½A20
+        in	al, 92h
+        or	al, 00000010b
+        out	92h, al
 
-	; ×¼±¸ÇÐ»»µ½±£»¤Ä£Ê½
-	mov	eax, cr0
-	or	eax, 1
-	mov	cr0, eax
+        ; ×¼ï¿½ï¿½ï¿½Ð»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£Ê½
+        mov	eax, cr0
+        or	eax, 1
+        mov	cr0, eax
 
-	; ÕæÕý½øÈë±£»¤Ä£Ê½
-	jmp	dword SelectorCode32:0	; Ö´ÐÐÕâÒ»¾ä»á°Ñ SelectorCode32 ×°Èë cs,
-					; ²¢Ìø×ªµ½ Code32Selector:0  ´¦
+        ; ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë±£ï¿½ï¿½Ä£Ê½
+        jmp	dword SelectorCode32:0	; Ö´ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ SelectorCode32 ×°ï¿½ï¿½ cs,
+                                        ; ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ Code32Selector:0  ï¿½ï¿½
 ; END of [SECTION .s16]
 
 
-[SECTION .s32]; 32 Î»´úÂë¶Î. ÓÉÊµÄ£Ê½ÌøÈë.
+[SECTION .s32]; 32 Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½. ï¿½ï¿½ÊµÄ£Ê½ï¿½ï¿½ï¿½ï¿½.
 [BITS	32]
 
 LABEL_SEG_CODE32:
-	mov	ax, SelectorVideo
-	mov	gs, ax			; ÊÓÆµ¶ÎÑ¡Ôñ×Ó(Ä¿µÄ)
+        mov	ax, SelectorVideo
+        mov	gs, ax			; ï¿½ï¿½Æµï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½(Ä¿ï¿½ï¿½)
 
-	mov	edi, (80 * 11 + 79) * 2	; ÆÁÄ»µÚ 11 ÐÐ, µÚ 79 ÁÐ¡£
-	mov	ah, 0Ch			; 0000: ºÚµ×    1100: ºì×Ö
-	mov	al, 'P'
-	mov	[gs:edi], ax
+        mov	edi, (80 * 11 + 79) * 2	; ï¿½ï¿½Ä»ï¿½ï¿½ 11 ï¿½ï¿½, ï¿½ï¿½ 79 ï¿½Ð¡ï¿½
+        mov	ah, 0Ch			; 0000: ï¿½Úµï¿½    1100: ï¿½ï¿½ï¿½ï¿½
+        mov	al, 'P'
+        mov	[gs:edi], ax
 
-	; µ½´ËÍ£Ö¹
-	jmp	$
+        ; ï¿½ï¿½ï¿½ï¿½Í£Ö¹
+        jmp	$
 
 SegCode32Len	equ	$ - LABEL_SEG_CODE32
 ; END of [SECTION .s32]
