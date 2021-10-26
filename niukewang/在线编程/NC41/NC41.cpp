@@ -1,4 +1,4 @@
-#include <set>
+#include <map>
 #include <vector>
 #include <iostream>
 
@@ -12,23 +12,25 @@ public:
      * @return int整型
      */
     int maxLength(std::vector<int>& arr) {
-        std::set<int> subarr;
+        std::map<int, int> subarr;
         int size = static_cast<int>(arr.size());
         int maxlen = 0;
         int subsize;
+        int leftidx = 0;
 
         for(int i=0; i<size; ++i){
-            std::set<int>::iterator it = subarr.find(arr[i]);
+            std::map<int, int>::iterator it = subarr.find(arr[i]);
             if(it != subarr.end()){
                 subsize = static_cast<int>(subarr.size());
                 if(maxlen < subsize){
                     maxlen = subsize;
                 }
 
-                ++it;
-                subarr.erase(subarr.begin(), it);
+                for(;leftidx <= it->second; ++leftidx){
+                    subarr.erase(arr[leftidx]);
+                }
             }
-            subarr.insert(arr[i]);
+            subarr.insert(std::pair<int,int>{arr[i],i});
         }
 
         subsize = static_cast<int>(subarr.size());
@@ -51,6 +53,7 @@ void test6(void);
 void test7(void);
 void test8(void);
 void test9(void);
+void test10(void);
 
 
 
@@ -71,7 +74,7 @@ void test(void){
     test7();
     test8();
     test9();
-//    test10();
+    test10();
 }
 
 // 4
@@ -122,6 +125,7 @@ void test6(void){
     std::cout << s.maxLength(arr) << std::endl;
 }
 
+// 1
 void test7(void){
     Solution s;
     std::vector<int> arr = {2,2};
@@ -129,6 +133,7 @@ void test7(void){
     std::cout << s.maxLength(arr) << std::endl;
 }
 
+// 1
 void test8(void){
     Solution s;
     std::vector<int> arr = {2,2,2};
@@ -136,6 +141,7 @@ void test8(void){
     std::cout << s.maxLength(arr) << std::endl;
 }
 
+// 4
 void test9(void){
     Solution s;
     std::vector<int> arr = {2,3,4,5,3};
@@ -143,10 +149,12 @@ void test9(void){
     std::cout << s.maxLength(arr) << std::endl;
 }
 
-//void test10(void){
-//    Solution s;
-//    std::vector<int> arr = {2,3,4,5,3};
 
-//    std::cout << s.maxLength(arr) << std::endl;
-//}
+// 5
+void test10(void){
+    Solution s;
+    std::vector<int> arr = {4,3,2,1,2,3,4,5};
+
+    std::cout << s.maxLength(arr) << std::endl;
+}
 
