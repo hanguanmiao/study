@@ -18,22 +18,23 @@ postgres-13.3
 ![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/538a34f3_10017097.png)
 ![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/b81d961f_10017097.png)  
 到PageHeaderData->pd_linp 总共24个字节，其中  
-&nbsp;&nbsp;&nbsp;&nbsp;0300 0000 e058 872e 是 pd_lsn
-&nbsp;&nbsp;&nbsp;&nbsp;0000 是 pd_checksum
-&nbsp;&nbsp;&nbsp;&nbsp;0000 是 pd_flags
-&nbsp;&nbsp;&nbsp;&nbsp;2000 是 pd_lower, 转换后为 0020(little-endian), 正好与':'左边 00000020 对上
-&nbsp;&nbsp;&nbsp;&nbsp;501f 是 pd_upper
-&nbsp;&nbsp;&nbsp;&nbsp;0020 是 pd_special，转换后为 2000, 即为8k，表示不存在special space
-&nbsp;&nbsp;&nbsp;&nbsp;0420 是 pd_pagesize_version
-&nbsp;&nbsp;&nbsp;&nbsp;0000 0000 是 pd_prune_xid
+&nbsp;&nbsp;&nbsp;&nbsp;0300 0000 e058 872e 是 pd_lsn  
+&nbsp;&nbsp;&nbsp;&nbsp;0000 是 pd_checksum  
+&nbsp;&nbsp;&nbsp;&nbsp;0000 是 pd_flags  
+&nbsp;&nbsp;&nbsp;&nbsp;2000 是 pd_lower, 转换后为 0020, 正好与':'左边 00000020 对上  
+&nbsp;&nbsp;&nbsp;&nbsp;501f 是 pd_upper, 转换后为 1f50  
+&nbsp;&nbsp;&nbsp;&nbsp;0020 是 pd_special，转换后为 2000, 即为8k，表示不存在special space  
+&nbsp;&nbsp;&nbsp;&nbsp;0420 是 pd_pagesize_version, 转换后为 2004, 04表示 page layout version, 2000表示 block size 为8k  
+&nbsp;&nbsp;&nbsp;&nbsp;0000 0000 是 pd_prune_xid  
 24字节之后的 a89f a200, 509f a800 分别指向第一行，第二行数据.  
 以a89f a200为例: a89f a200 转换后为 00000000 10100010 10011111 10101000 -> 000000001010001 01 001111110101000,  
-&nbsp;&nbsp;&nbsp;&nbsp;其中000000001010001 表示数据长度为81， 01表示used,  001111110101000表示偏移量8104  
+&nbsp;&nbsp;&nbsp;&nbsp;其中000000001010001 表示数据长度为81， 01表示used,  001111110101000表示偏移量8104, 16进制为1fa8
 
 #### 数据  
 ![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/26dd9ecc_10017097.png)
-![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/1c601743_10017097.png)
-
+![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/1c601743_10017097.png)  
+502行':'左边的 00001f50 正好与 pd_upper 对上  
+507行':'右边的 be2f 的位置(1fa8)正好与pd_linp的指向的第一行数据的偏移量1fa8对上  
 前23个字节为头部, 以bbbb这行数据为例  
 bf2c 0000 0000 0000 0000 0000 分别是  t_xmin， t_xmax，t_cid  
 0000 0000 0200 是  t_ctid，02指第二行数据  
