@@ -9,6 +9,10 @@ postgres-13.3
 插入数据  
 ![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/9b5e815a_10017097.png)
 
+### heaptuple结构  
+![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/Screenshot%20from%202023-02-03%2018-08-11.png)
+上图表示了tuple的数据存储结构，位于 include/storage/bufpage.h
+
 ### 从文件中解读  
 #### 头部  
 ![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/538a34f3_10017097.png)
