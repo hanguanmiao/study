@@ -15,9 +15,9 @@
 ![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/b81d961f_10017097.png)
 
 到PageHeaderData->pd_linp 总共24个字节，  
-24字节之后的a89f a200, 509f a800 分别指向第一行，第二行数据.  
-以a89f a200为例:a89f a200 转换后为 00000000 10100010 10011111 10101000 -> 000000001010001 01 001111110101000,  
-&nbsp;&nbsp;其中000000001010001 表示长度 81， 01表示used,  001111110101000表示偏移量8104  
+24字节之后的 a89f a200, 509f a800 分别指向第一行，第二行数据.  
+以a89f a200为例: a89f a200 转换后为 00000000 10100010 10011111 10101000 -> 000000001010001 01 001111110101000,  
+&nbsp;&nbsp;&nbsp;&nbsp;其中000000001010001 表示数据长度为81， 01表示used,  001111110101000表示偏移量8104  
 
 #### 数据  
 ![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/26dd9ecc_10017097.png)
