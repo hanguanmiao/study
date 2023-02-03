@@ -1,5 +1,6 @@
-## Heaptulple  
-以postgres-13.3为例  
+## 环境  
+ubuntu16.04 little-endian
+postgres-13.3
 
 ### 准备  
 建表  
@@ -9,12 +10,18 @@
 ![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/9b5e815a_10017097.png)
 
 ### 从文件中解读  
-
 #### 头部  
 ![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/538a34f3_10017097.png)
 ![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/b81d961f_10017097.png)
-
-到PageHeaderData->pd_linp 总共24个字节，  
+到PageHeaderData->pd_linp 总共24个字节，其中  
+&nbsp;&nbsp;&nbsp;&nbsp;0300 0000 e058 872e 是 pd_lsn
+&nbsp;&nbsp;&nbsp;&nbsp;0000 是 pd_checksum
+&nbsp;&nbsp;&nbsp;&nbsp;0000 是 pd_flags
+&nbsp;&nbsp;&nbsp;&nbsp;2000 是 pd_lower, 转换后为 0020(little-endian), 正好与':'左边 00000020 对上
+&nbsp;&nbsp;&nbsp;&nbsp;501f 是 pd_upper
+&nbsp;&nbsp;&nbsp;&nbsp;0020 是 pd_special，转换后为 2000, 即为8k，表示不存在special space
+&nbsp;&nbsp;&nbsp;&nbsp;0420 是 pd_pagesize_version
+&nbsp;&nbsp;&nbsp;&nbsp;0000 0000 是 pd_prune_xid
 24字节之后的 a89f a200, 509f a800 分别指向第一行，第二行数据.  
 以a89f a200为例: a89f a200 转换后为 00000000 10100010 10011111 10101000 -> 000000001010001 01 001111110101000,  
 &nbsp;&nbsp;&nbsp;&nbsp;其中000000001010001 表示数据长度为81， 01表示used,  001111110101000表示偏移量8104  
