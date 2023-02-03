@@ -14,6 +14,7 @@ postgres-13.3
 上图表示了tuple的数据存储结构，位于 include/storage/bufpage.h
 
 ### 从文件中解读  
+数据文件位于base/${dbid}/${relfilenode}  
 #### 头部  
 ![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/538a34f3_10017097.png)
 ![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/b81d961f_10017097.png)  
@@ -36,8 +37,10 @@ postgres-13.3
 502行':'左边的 00001f50 正好与 pd_upper 对上  
 507行':'右边的 be2f 的位置(1fa8)正好与pd_linp的指向的第一行数据的偏移量1fa8对上  
 前23个字节为头部, 以bbbb这行数据为例  
-bf2c 0000 0000 0000 0000 0000 分别是  t_xmin， t_xmax，t_cid  
-0000 0000 0200 是  t_ctid，02指第二行数据  
+&nbsp;&nbsp;&nbsp;&nbsp;bf2c 0000是t_xmin  
+0000 0000是t_xmax  
+0000 0000是t_cid  
+0000 0000 0200是t_ctid 
 0a00是t_infomask2，0a表示含有10个字段  
 0308是t_infomask，08表示HEAP_XMAX_INVALID，03表示 HEAP_HASNULL | HEAP_HASVARWIDTH  
 20是t_hoff，表示数据起始偏移量为32  
@@ -48,5 +51,6 @@ ff01是t_bits，表示第10个字段为空
 0000为padding  
 
 ### 修改  
-可以通过编辑文件修改数据内容  
+可以通过编辑文件修改数据内容,
+修改后需要等待一定时间或者查询其他数据或者重启，因为数据可能存在缓存导致查出来并没有改变  
 ![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/357cbe2d_10017097.png)
