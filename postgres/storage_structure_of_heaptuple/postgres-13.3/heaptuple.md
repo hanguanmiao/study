@@ -10,13 +10,13 @@ postgres-13.3
 ![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/9b5e815a_10017097.png)
 
 ### heaptuple结构  
-![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/Screenshot%20from%202023-02-03%2018-08-11.png)
+![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/Screenshot%20from%202023-02-03%2018-08-11.png)  
 上图表示了tuple的数据存储结构，位于 include/storage/bufpage.h
 
 ### 从文件中解读  
 #### 头部  
 ![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/538a34f3_10017097.png)
-![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/b81d961f_10017097.png)
+![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/b81d961f_10017097.png)  
 到PageHeaderData->pd_linp 总共24个字节，其中  
 &nbsp;&nbsp;&nbsp;&nbsp;0300 0000 e058 872e 是 pd_lsn
 &nbsp;&nbsp;&nbsp;&nbsp;0000 是 pd_checksum
