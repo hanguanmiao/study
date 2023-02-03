@@ -1,21 +1,19 @@
 ## Heaptulple
+以postgres-13.3为例
 
 ### 准备
 
 建表
-![image.png](https://foruda.gitee.com/images/1665730199452167381/761dd704_10017097.png)
+![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/761dd704_10017097.png)
 
 插入数据
-
-![image.png](https://foruda.gitee.com/images/1665730229541279017/9b5e815a_10017097.png)
+![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/9b5e815a_10017097.png)
 
 ### 从文件中解读
 
 #### 头部
-
-![image.png](https://foruda.gitee.com/images/1665730496209912161/538a34f3_10017097.png)
-
-![image.png](https://foruda.gitee.com/images/1665730543868118601/b81d961f_10017097.png)
+![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/538a34f3_10017097.png)
+![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/b81d961f_10017097.png)
 
 到PageHeaderData->pd_linp 总共24个字节，
 
@@ -26,9 +24,8 @@ a89f a200 转换后为  00000000 10100010 10011111 10101000  -> 000000001010001 
 000000001010001 表示长度 81， 01表示used,  001111110101000表示偏移量8104
 
 #### 数据
-
-![image.png](https://foruda.gitee.com/images/1665733717255901991/26dd9ecc_10017097.png)
-![image.png](https://foruda.gitee.com/images/1665733691419342701/1c601743_10017097.png)
+![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/26dd9ecc_10017097.png)
+![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/1c601743_10017097.png)
 
 前23个字节为头部
 
@@ -58,4 +55,4 @@ ff01是t_bits，表示第10个字段为空
 
 可以通过编辑文件修改数据内容
 
-![image.png](https://foruda.gitee.com/images/1665746525411532406/357cbe2d_10017097.png)
+![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/357cbe2d_10017097.png)
