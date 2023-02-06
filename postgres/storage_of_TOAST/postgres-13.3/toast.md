@@ -25,6 +25,7 @@ d9d70e00是 va_toastrelid，表示toast oid为972761
 ![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_of_TOAST/postgres-13.3/pictures/b2ff7b89_10017097.png)  
 1098 e00f 2090 e00f 3088 e00f 4080 e00f 表示四行数据  
 > 说明:每个page含有4个extern_tuple，由EXTERN_TUPLES_PER_PAGE定义  
+
 HeapTuple头部和main没有区别，不做说明。从ddd7 0e00开始  
 ddd7 0e00 是同main中的va_valueid是一样的，用来标识是哪个attribute哪行的数据  
 0300 0000表示chunk_seq，chunk_seq是从0开始计数  
