@@ -71,23 +71,23 @@ centos-7.9
 > t_xmax 5表示 multixact 5 获得了该锁  
 
 ## 文件解读  
-记录multixact的有两个文件，分别是member, offset  
-member位于pg_multixact/members  
-offset位于pg_multixact/offsets  
+> 记录multixact的有两个文件，分别是member, offset  
+>     member位于pg_multixact/members  
+>    offset位于pg_multixact/offsets  
 
 ### 文件offset  
 ![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/multixact/postgres-13.3/pictures/Screenshot%20from%202023-02-07%2017-38-58.png)  
-该文件的最后一个offset是 0900 0000， 经过MXOffsetToMemberOffset计算，member偏移量48 bytes  
-经过MXOffsetToFlagsOffset计算，flag偏移量40 bytes  
-经过MXOffsetToFlagsBitShift计算, flag bit偏移 8 bit  
+> 该文件的最后一个offset是 0900 0000， 经过MXOffsetToMemberOffset计算，member偏移量48 bytes  
+>     经过MXOffsetToFlagsOffset计算，flag偏移量40 bytes  
+>     经过MXOffsetToFlagsBitShift计算, flag bit偏移 8 bit  
 
 ### 文件member  
 ![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/multixact/postgres-13.3/pictures/Screenshot%20from%202023-02-07%2017-40-10.png)  
-由offset可知 0000 0100 2e0c 0000 380c 0000 398c 0000 为member内容  
-2e0c 0000是上一条的事务号  
-380c 0000是事务号3128  
-398c 0000是事务号3129  
-00 01分别对应3128、3129锁类型 MultiXactStatusForKeyShare、MultiXactStatusForShare  
+> 由offset可知 0000 0100 2e0c 0000 380c 0000 398c 0000 为member内容  
+>     2e0c 0000是上一条的事务号  
+>     380c 0000是事务号3128  
+>     398c 0000是事务号3129  
+>     00 01分别对应3128、3129锁类型 MultiXactStatusForKeyShare、MultiXactStatusForShare  
 
 ## 参考资料  
 [PG的multixact是做什么的](https://www.modb.pro/db/14939)  
