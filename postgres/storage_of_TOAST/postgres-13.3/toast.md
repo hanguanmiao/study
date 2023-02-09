@@ -2,7 +2,10 @@
 [storage_structure_of_heaptuple](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/heaptuple.md)  
 
 ## 环境  
-ubuntu16.04 little-endian postgres-13.3  
+ubuntu16.04 little-endian   
+
+## pg版本号  
+postgres-13.3  
 
 ## 准备  
 插入数据  
