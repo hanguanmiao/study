@@ -31,12 +31,13 @@ centos-7.9
 > #define MULTIXACT_MEMBER_SAFE_THRESHOLD		2147483647  
 > #define MULTIXACT_MEMBER_DANGER_THRESHOLD	3221225472  
 
-## multixact的创建
-### 函数 MultiXactIdCreate
+## multixact的创建  
+### 函数  
+#### 函数 MultiXactIdCreate  
+该函数用于将xids组合成multixid  
 
-### 函数 RecordNewMultiXact  
-
-RecordNewMultiXact 用于记录 multixact  
+#### 函数 RecordNewMultiXact  
+该函数用于记录 multixact  
 
 ```
 static void
@@ -57,7 +58,7 @@ RecordNewMultiXact(MultiXactId multi, MultiXactOffset offset,
 ```
 
 
-## 测试  
+### 测试  
 进程1，先执行sql  
 ![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/multixact/postgres-13.3/pictures/Screenshot%20from%202023-02-07%2019-33-04.png)  
 > t_infomask 402转换成16进制为0x192  
@@ -66,30 +67,33 @@ RecordNewMultiXact(MultiXactId multi, MultiXactOffset offset,
 >     0x0002 表示 HEAP_HASVARWIDTH  
 > t_xmax 3128表示进程3128获得了该锁  
 
-进程2![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/multixact/postgres-13.3/pictures/Screenshot%20from%202023-02-07%2019-33-30.png)  
+进程2  
+![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/multixact/postgres-13.3/pictures/Screenshot%20from%202023-02-07%2019-33-30.png)  
 > t_infomask 402转换成16进制为11d2  
 >     0x1000 表示HEAP_XMAX_IS_MULTI  
 >     0x00d2表示 HEAP_XMAX_LOCK_ONLY | HEAP_XMAX_EXCL_LOCK | HEAP_XMAX_KEYSHR_LOCK  
 > t_xmax 5表示 multixact 5 获得了该锁  
 
-## 文件解读  
+### 文件解读  
 > 记录multixact的有两个文件，分别是member, offset  
 >     member位于pg_multixact/members  
->    offset位于pg_multixact/offsets  
+>     offset位于pg_multixact/offsets  
 
-### 文件offset  
+#### 文件offset解读  
 ![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/multixact/postgres-13.3/pictures/Screenshot%20from%202023-02-07%2017-38-58.png)  
 > 该文件的最后一个offset是 0900 0000， 经过MXOffsetToMemberOffset计算，member偏移量48 bytes  
 >     经过MXOffsetToFlagsOffset计算，flag偏移量40 bytes  
 >     经过MXOffsetToFlagsBitShift计算, flag bit偏移 8 bit  
 
-### 文件member  
+### 文件member解读  
 ![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/multixact/postgres-13.3/pictures/Screenshot%20from%202023-02-07%2017-40-10.png)  
 > 由offset可知 0000 0100 2e0c 0000 380c 0000 398c 0000 为member内容  
 >     2e0c 0000是上一条的事务号  
 >     380c 0000是事务号3128  
 >     398c 0000是事务号3129  
->     00 01分别对应3128、3129锁类型 MultiXactStatusForKeyShare、MultiXactStatusForShare  
+>     00 01分别对应3128、3129锁类型 MultiXactStatusForKeyShare、MultiXactStatusForShare  
+
+## multixact的扩展
 
 ## 参考资料  
 [PG的multixact是做什么的](https://www.modb.pro/db/14939)  
