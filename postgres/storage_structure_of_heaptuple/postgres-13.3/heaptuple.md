@@ -1,21 +1,23 @@
 ## 环境  
 ubuntu16.04 little-endian
+
+## pg版本号
 postgres-13.3
 
-### 准备  
+## 准备  
 建表  
 ![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/761dd704_10017097.png)
 
 插入数据  
 ![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/9b5e815a_10017097.png)
 
-### heaptuple结构  
+## heaptuple结构  
 ![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/Screenshot%20from%202023-02-03%2018-08-11.png)  
 上图表示了tuple的数据存储结构，位于 include/storage/bufpage.h
 
-### 从文件中解读  
+## 从文件中解读  
 数据文件位于base/${dbid}/${relfilenode}  
-#### 头部  
+### 头部解读  
 ![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/538a34f3_10017097.png)
 ![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/b81d961f_10017097.png)  
 到PageHeaderData->pd_linp 总共24个字节，其中  
@@ -31,7 +33,7 @@ postgres-13.3
 以a89f a200为例: a89f a200 转换后为 00000000 10100010 10011111 10101000 -> 000000001010001 01 001111110101000,  
 &nbsp;&nbsp;&nbsp;&nbsp;其中000000001010001 表示数据长度为81， 01表示used,  001111110101000表示偏移量8104, 16进制为1fa8
 
-#### 数据  
+### 数据解读  
 ![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/26dd9ecc_10017097.png)
 ![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/1c601743_10017097.png)  
 502行':'左边的 00001f50 正好与 pd_upper 对上  
@@ -50,7 +52,7 @@ postgres-13.3
 &nbsp;&nbsp;&nbsp;&nbsp;0d62 6262 6262： 0d -> 00001101 表示长度占1个字节，总共长度为6  
 &nbsp;&nbsp;&nbsp;&nbsp;0000为padding  
 
-### 修改  
+## 修改  
 可以通过编辑文件修改数据内容,
 修改后需要等待一定时间或者查询其他数据或者重启，因为数据可能存在缓存导致查出来并没有改变  
 ![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/357cbe2d_10017097.png)
