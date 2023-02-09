@@ -1,9 +1,10 @@
 ## 版本号  
-
 postgres-13.3  
 
-## 宏定义  
+## 环境  
+centos-7.9  
 
+## 宏定义  
 ![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/multixact/postgres-13.3/pictures/Screenshot%20from%202023-02-08%2011-39-52.png)  
 > #define MULTIXACT_OFFSETS_PER_PAGE		2048  
 > #define MultiXactIdToOffsetPage(xid)			(xid/2048)  
@@ -30,7 +31,10 @@ postgres-13.3  
 > #define MULTIXACT_MEMBER_SAFE_THRESHOLD		2147483647  
 > #define MULTIXACT_MEMBER_DANGER_THRESHOLD	3221225472  
 
-## 函数 RecordNewMultiXact  
+## multixact的创建
+### 函数 MultiXactIdCreate
+
+### 函数 RecordNewMultiXact  
 
 RecordNewMultiXact 用于记录 multixact  
 
@@ -52,8 +56,6 @@ RecordNewMultiXact(MultiXactId multi, MultiXactOffset offset,
 }
 ```
 
-## 环境  
-centos-7.9  
 
 ## 测试  
 进程1，先执行sql  
