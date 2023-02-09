@@ -1,3 +1,4 @@
+# multixact的创建与存储  
 ## 版本号  
 postgres-13.3  
 
@@ -85,7 +86,7 @@ RecordNewMultiXact(MultiXactId multi, MultiXactOffset offset,
 >     经过MXOffsetToFlagsOffset计算，flag偏移量40 bytes  
 >     经过MXOffsetToFlagsBitShift计算, flag bit偏移 8 bit  
 
-### 文件member解读  
+#### 文件member解读  
 ![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/multixact/postgres-13.3/pictures/Screenshot%20from%202023-02-07%2017-40-10.png)  
 > 由offset可知 0000 0100 2e0c 0000 380c 0000 398c 0000 为member内容  
 >     2e0c 0000是上一条的事务号  
@@ -93,7 +94,9 @@ RecordNewMultiXact(MultiXactId multi, MultiXactOffset offset,
 >     398c 0000是事务号3129  
 >     00 01分别对应3128、3129锁类型 MultiXactStatusForKeyShare、MultiXactStatusForShare  
 
-## multixact的扩展
+## multixact的扩展  
+### 函数MultiXactIdExpand  
+改函数并不覆盖之前创建的multixactid，而是会组合之前的xid组合成一个新的multixactid  
 
 ## 参考资料  
 [PG的multixact是做什么的](https://www.modb.pro/db/14939)  
