@@ -96,7 +96,7 @@ RecordNewMultiXact(MultiXactId multi, MultiXactOffset offset,
 
 ## multixact的扩展  
 ### 函数MultiXactIdExpand  
-改函数并不覆盖之前创建的multixactid，而是会组合之前的xid组合成一个新的multixactid  
+该函数并不覆盖之前创建的multixactid，而是会组合之前的xid组合成一个新的multixactid  
 
 ## 参考资料  
 [PG的multixact是做什么的](https://www.modb.pro/db/14939)  
