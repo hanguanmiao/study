@@ -1,8 +1,8 @@
 ## 环境  
-ubuntu16.04 little-endian
+ubuntu16.04 little-endian  
 
-## pg版本号
-postgres-13.3
+## pg版本号  
+postgres-13.3  
 
 ## 准备  
 建表  
