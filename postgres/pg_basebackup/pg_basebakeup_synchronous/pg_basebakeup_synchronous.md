@@ -106,7 +106,7 @@ postgres9.6
     pg_ctl start -D slave/
     ```
 
-###准备切换  
+### 准备切换  
 1. 停止主库  
     ```
     pg_ctl stop -D master
