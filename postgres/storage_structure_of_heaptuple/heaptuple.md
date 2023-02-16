@@ -6,20 +6,20 @@ postgres-13.3
 
 ## 准备  
 建表  
-![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/761dd704_10017097.png)
+![image.png](https://github.com/hanguanmiao/study/blob/main/pictures/postgres/storage_structure_of_heaptuple/761dd704_10017097.png)
 
 插入数据  
-![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/9b5e815a_10017097.png)
+![image.png](https://github.com/hanguanmiao/study/blob/main/pictures/postgres/storage_structure_of_heaptuple/9b5e815a_10017097.png)
 
 ## heaptuple结构  
-![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/Screenshot%20from%202023-02-03%2018-08-11.png)  
+![image.png](https://github.com/hanguanmiao/study/blob/main/pictures/postgres/storage_structure_of_heaptuple/Screenshot%20from%202023-02-03%2018-08-11.png)  
 上图表示了tuple的数据存储结构，位于 include/storage/bufpage.h
 
 ## 从文件中解读  
 数据文件位于base/${dbid}/${relfilenode}  
 ### 头部解读  
-![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/538a34f3_10017097.png)
-![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/b81d961f_10017097.png)  
+![image.png](https://github.com/hanguanmiao/study/blob/main/pictures/postgres/storage_structure_of_heaptuple/538a34f3_10017097.png)
+![image.png](https://github.com/hanguanmiao/study/blob/main/pictures/postgres/storage_structure_of_heaptuple/b81d961f_10017097.png)  
 到PageHeaderData->pd_linp 总共24个字节，其中  
 &nbsp;&nbsp;&nbsp;&nbsp;0300 0000 e058 872e 是 pd_lsn  
 &nbsp;&nbsp;&nbsp;&nbsp;0000 是 pd_checksum  
@@ -34,8 +34,8 @@ postgres-13.3
 &nbsp;&nbsp;&nbsp;&nbsp;其中000000001010001 表示数据长度为81， 01表示used,  001111110101000表示偏移量8104, 16进制为1fa8
 
 ### 数据解读  
-![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/26dd9ecc_10017097.png)
-![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/1c601743_10017097.png)  
+![image.png](https://github.com/hanguanmiao/study/blob/main/pictures/postgres/storage_structure_of_heaptuple/26dd9ecc_10017097.png)
+![image.png](https://github.com/hanguanmiao/study/blob/main/pictures/postgres/storage_structure_of_heaptuple/1c601743_10017097.png)  
 502行':'左边的 00001f50 正好与 pd_upper 对上  
 507行':'右边的 be2f 的位置(1fa8)正好与pd_linp的指向的第一行数据的偏移量1fa8对上  
 以bbbb这行数据为例,前23个字节为头部  
@@ -55,4 +55,4 @@ postgres-13.3
 ## 修改  
 可以通过编辑文件修改数据内容,
 修改后需要等待一定时间或者查询其他数据或者重启，因为数据可能存在缓存导致查出来并没有改变  
-![image.png](https://github.com/hanguanmiao/study/blob/main/postgres/storage_structure_of_heaptuple/postgres-13.3/pictures/357cbe2d_10017097.png)
+![image.png](https://github.com/hanguanmiao/study/blob/main/pictures/postgres/storage_structure_of_heaptuple/357cbe2d_10017097.png)
