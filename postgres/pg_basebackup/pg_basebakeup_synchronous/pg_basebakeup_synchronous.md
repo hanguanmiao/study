@@ -22,12 +22,10 @@ postgres9.6
     max_wal_senders = 10
     wal_keep_segments = 128000000
     synchronous_commit = on
- //   archive_mode = on
- //   archive_command = 'rsync %p username@hostname:archivedir_master/%f'
-    
+	//   archive_mode = on 
+	//   archive_command = 'rsync %p username@hostname:archivedir_master/%f' 
     // hot_standby = off
     // hot_standby_feedback = on
-    
     synchronous_standby_names = 'FIRST 2 (slavenode1, slavenode2)'
     ```
 
@@ -109,7 +107,7 @@ postgres9.6
     ```
 
 ###准备切换  
-1 . 停止主库  
+1. 停止主库  
     ```
     pg_ctl stop -D master
     ```
