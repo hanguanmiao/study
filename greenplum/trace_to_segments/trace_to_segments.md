@@ -33,7 +33,7 @@ psql -d database -p 2345
 ```
 ps -ef --forest | grep postgres
 ```
-![enter image description here](http://note.lotuseed.com/api/file/getImage?fileId=5b3a1b97f25c5c38b1008e78)  
+![enter image description here](https://github.com/hanguanmiao/study/blob/main/pictures/greenplum/trace_to_segments/b2a0a66e98ce9b9b87bf7345393c2c28.png)  
 
 - gdb联系master上的后端进程号  
 ```
@@ -59,7 +59,7 @@ SELECT * from test order by id;
 ```
 ps -ef --forest | grep postgres
 ```
-![enter image description here](http://note.lotuseed.com/api/file/getImage?fileId=5b3a1e0ff25c5c38b1008e79)  
+![enter image description here](https://github.com/hanguanmiao/study/blob/main/pictures/greenplum/trace_to_segments/266a8bfeecb1437c3a8cebf2f200c9fa.png)  
 
 - gdb联系segment上的后端进程号  
 ```
@@ -83,7 +83,7 @@ c
 ### <div id="psql_qidong">1. psql启动</div>  
  
 
-####<div id="PostmasterMain">函数PostmasterMain</div>  
+#### <div id="PostmasterMain">函数PostmasterMain</div>  
  
 ```
 /*
