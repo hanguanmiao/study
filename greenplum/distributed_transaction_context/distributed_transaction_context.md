@@ -20,6 +20,74 @@
 > insert into tbl_test1 select * from tbl_test2;  
 
 ### QD  
+函数StartTransactionCommand  
+```
+void
+StartTransactionCommand(void)
+{
+	if (Gp_role == GP_ROLE_DISPATCH)
+		// DistributedTransactionContext 由 DTX_CONTEXT_LOCAL_ONLY 变更为 DTX_CONTEXT_QD_DISTRIBUTED_CAPABLE
+		setupRegularDtxContext();
+
+        TransactionState s = CurrentTransactionState;
+
+        switch (s->blockState)
+        {
+                case TBLOCK_DEFAULT:
+                        StartTransaction();
+                        s->blockState = TBLOCK_STARTED;
+                        break;
+        }
+}
+```
+
+函数 cdbdisp_dispatchX  
+```
+static void
+cdbdisp_dispatchX(QueryDesc* queryDesc,
+					bool planRequiresTxn,
+					bool cancelOnError)
+{
+	for (iSlice = 0; iSlice < nSlices; iSlice++)
+	{
+		// 分别发送query给 QE reader, QE writer
+		cdbdisp_dispatchToGang(ds, primaryGang, si);
+	}
+}
+```
+
+函数 CommitTransactionCommand  
+```
+void
+CommitTransactionCommand(void)
+{
+	TransactionState s = CurrentTransactionState;
+
+	switch (s->blockState)
+	{
+		case TBLOCK_STARTED:
+			CommitTransaction();
+			s->blockState = TBLOCK_DEFAULT;
+			break;
+	}
+}
+```
+
+函数 CommitTransaction  
+```
+static void
+CommitTransaction(void)
+{
+	// 发送 DTX_PROTOCOL_COMMAND_PREPARE 给 QE writer
+	prepareDtxTransaction();
+
+	// 发送 DTX_PROTOCOL_COMMAND_COMMIT_PREPARED 给 QE writer
+	notifyCommittedDtxTransaction();
+
+	// DistributedTransactionContext 由 DTX_CONTEXT_QD_DISTRIBUTED_CAPABLE 变更为 DTX_CONTEXT_LOCAL_ONLY
+	finishDistributedTransactionContext("CommitTransaction", false);
+}
+```
 
 ### QE reader  
 #### 处理 query 
@@ -28,7 +96,7 @@
 void
 setupQEDtxContext(DtxContextInfo *dtxContextInfo)
 {
-        // DistributedTransactionContext由DTX_CONTEXT_LOCAL_ONLY 变更为 DTX_CONTEXT_QE_READER
+        // DistributedTransactionContext 由 DTX_CONTEXT_LOCAL_ONLY 变更为 DTX_CONTEXT_QE_READER
         setDistributedTransactionContext(DTX_CONTEXT_QE_TWO_PHASE_IMPLICIT_WRITER);
 }
 ```
